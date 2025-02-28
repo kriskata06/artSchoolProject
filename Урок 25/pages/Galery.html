@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Арт студио - Галерия</title>
+    <link rel="stylesheet" href="stylle.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        /* Custom CSS styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background-color: #343a40;
+            padding: 10px 0;
+        }
+
+        nav .navbar-brand img {
+            width: 60px;
+        }
+
+        nav .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        nav .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+        }
+
+        #gallery-container {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 0 15px;
+        }
+
+        #gallery-container .col-sm {
+            max-width: 300px;
+            flex: 1 0 21%;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        figure {
+            margin: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        figure:hover {
+            transform: scale(1.05);
+        }
+
+        figure img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        figcaption {
+            padding: 10px;
+            background-color: #ffffff;
+            font-size: 1.2rem;
+            text-align: center;
+            color: #333;
+            border-radius: 0 0 10px 10px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .img-fluid {
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 100%;
+            height: auto;
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        figure img {
+            object-fit: cover;
+        }
+
+        .nav-item.active .nav-link {
+            background-color: #eb34c6;
+            border-radius: 5px;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+		
+		/* Custom styling for the "Remove" button */
+		.remove-btn {
+			background-color: #e74c3c; /* Red color */
+			border: none;
+			color: white;
+			font-size: 1rem;
+			font-weight: bold;
+			padding: 8px 12px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			display: inline-block;
+			margin-top: 10px; /* Adds space between the text and button */
+			text-align: center;
+			width: 100%; /* Ensure button spans the full width of the figure */
+		}
+
+		.remove-btn:hover {
+			background-color: #c0392b; /* Darker red on hover */
+		}
+
+		.remove-btn:active {
+			transform: scale(0.98); /* Slightly shrink the button when clicked */
+		}
+
+		.remove-btn:focus {
+			outline: none;
+			box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.5); /* Light red outline on focus */
+		}
+
+
+    </style>
+</head>
+
+<body>
+    <script defer src="mind.js"></script>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                    <img src="../I/l.jpg" alt="" width="60">
+                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home.html">Начало </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mision.html">Нашата мисия</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="Galery.html">Галерия</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Contacts.html">Контакти</a>
+                        </li>
+                        <li class="nav-item">
+                            <input id="search-bar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" oninput="highlightText()">
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://revolut.me/kristiqjbf" target="_blank" class="nav-link">
+                                <img src="../I/bc.jpg" alt="Designer" class="designer-image" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                                <span class="tip-text">Tip the designer</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row" id="gallery-container">
+            <!-- Dynamic gallery content will be added here by JavaScript -->
+        </div>
+
+        <div class="row">
+			<div class="col-md-12 d-flex justify-content-between">
+				<button type="button" class="btn btn-success" id="addArtBtn">
+					Добавете произведение
+				</button>
+				<button type="button" class="btn btn-danger" id="clearJasonData">
+					Clear local JSON data
+				</button>
+			</div>
+		</div>
+
+        <!-- Modal for adding artwork -->
+        <div class="modal" id="addArtModal" tabindex="-1" role="dialog" aria-labelledby="addArtModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addArtModalLabel">Добавете Вашето произведение</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addArtForm">
+                            <div class="form-group">
+                                <label for="title">Заглавие на произведението</label>
+                                <input type="text" class="form-control" id="title" placeholder="Въведете заглавие" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imageUrl">Изберете изображение</label>
+                                <input type="file" class="form-control" id="imageUrl" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Описание на произведението</label>
+                                <textarea class="form-control" id="description" rows="3" placeholder="Въведете описание" required></textarea>
+                            </div>
+							<div class="form-group">
+								<label for="price">Цена</label>
+								<input type="text" class="form-control" id="price" placeholder="Въведете цена" required>
+							</div>
+                            <button type="submit" class="btn btn-primary">Добавете произведение</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Кристиян Стойков / ПГПЧЕ "Димитър Димов" 2025</p>
+        </footer>
+    </div>
+
+    <!-- External JS libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy6hI7j4Ffw8fRQQxw0p/ScFjJUd0bLy5tEO6+R4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0Vs5Ht4O2z1gF6g4BYP74pZY7h2S8edQs8BvT60IddGzOSn5" crossorigin="anonymous"></script>
+
+ <script>
+    // Function to open the modal for adding artwork
+    document.getElementById('addArtBtn').addEventListener('click', function () {
+        document.getElementById('addArtModal').classList.add('show');
+        document.getElementById('addArtModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Disable scrolling when modal is open
+    });
+
+    // Function to close the modal
+    document.getElementById('closeModal').addEventListener('click', function () {
+        document.getElementById('addArtModal').classList.remove('show');
+        document.getElementById('addArtModal').style.display = 'none';
+        document.body.style.overflow = ''; // Enable scrolling when modal is closed
+    });
+
+    // Function to handle the form submission
+    document.getElementById('addArtForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form from refreshing the page
+
+        // Get values from the form
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const imageUrl = document.getElementById('imageUrl').files[0];
+        const price = document.getElementById('price').value; // Correctly capture the price
+
+        // Ensure all fields are filled out
+        if (!title || !description || !imageUrl || !price) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        // Create a FileReader to read the image as a URL
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            // Create a new gallery item object
+            const newItem = {
+                title: title,
+                description: description,
+                imgSrc: reader.result,
+                price: price, // Use the price correctly
+                sold: false // Set the item as not sold initially
+            };
+
+            // Add the new item to the galleryData array
+            galleryData.push(newItem);
+
+            // Update localStorage
+            localStorage.setItem('galleryData', JSON.stringify(galleryData));
+
+            // Update the gallery display with the new artwork
+            createGallery(galleryData);
+
+            // Clear the form
+            document.getElementById('addArtForm').reset();
+
+            // Close the modal
+            document.getElementById('addArtModal').classList.remove('show');
+            document.getElementById('addArtModal').style.display = 'none';
+            document.body.style.overflow = ''; // Enable scrolling again
+        };
+
+        // Read the image as a data URL
+        reader.readAsDataURL(imageUrl);
+    });
+
+    // Function to create gallery items dynamically
+    function createGallery(galleryData) {
+        const galleryContainer = document.getElementById("gallery-container");
+
+        // Clear the existing gallery before re-rendering it
+        galleryContainer.innerHTML = '';
+
+        galleryData.forEach((item, index) => {
+            const col = document.createElement("div");
+            col.classList.add("col-sm");
+
+            const figure = document.createElement("figure");
+
+            const img = document.createElement("img");
+            img.src = item.imgSrc;
+            img.alt = item.title;
+            img.style.width = "100%";
+
+            const figCaption = document.createElement("figcaption");
+            figCaption.innerHTML = `${item.title} <br> <strong>Цена:</strong> ${item.price}`;
+
+            // If the item is sold, add a "Продадено" label
+            if (item.sold) {
+                const soldLabel = document.createElement("div");
+                soldLabel.textContent = "Продадено";
+                soldLabel.classList.add("sold-label");
+                figure.appendChild(soldLabel);
+            }
+
+            // Create a link that will open the detailed page when clicked
+            const link = document.createElement("a");
+            link.href = "#";
+            link.onclick = function (e) {
+                e.preventDefault(); // Prevent the default behavior of the link
+                openDetailPage(item, index);  // Pass index to identify the item
+            };
+
+            // Add the image and caption to the figure
+            figure.appendChild(img);
+            figure.appendChild(figCaption);
+
+            // Now, add the remove button below the description
+            const removeBtn = document.createElement("button");
+            removeBtn.classList.add("remove-btn"); // Apply custom class for styling
+            removeBtn.textContent = "Remove";
+            removeBtn.onclick = function (e) {
+                e.stopPropagation(); // Prevent link click event
+                removeItemFromGallery(index);
+            };
+
+            // Add the remove button below the figcaption
+            figure.appendChild(removeBtn);
+
+            // Add the link to the column
+            link.appendChild(figure);
+
+            // Add the column to the gallery container
+            col.appendChild(link);
+
+            // Add the column to the gallery container
+            galleryContainer.appendChild(col);
+        });
+    }
+
+    // Function to remove item from the gallery
+    function removeItemFromGallery(index) {
+        // Remove the item from the galleryData array
+        galleryData.splice(index, 1);
+
+        // Update localStorage
+        localStorage.setItem('galleryData', JSON.stringify(galleryData));
+
+        // Update the gallery display with the new data
+        createGallery(galleryData);
+    }
+
+    // Function to dynamically open the detail page content
+    function openDetailPage(item, index) {
+        const detailPage = document.createElement("div");
+        detailPage.innerHTML = `
+            <div class="container">
+                <h1>${item.title}</h1>
+                <img src="${item.imgSrc}" alt="${item.title}" class="img-fluid">
+                <p style="text-align: justify;">${item.description}</p>
+                <button onclick="goBackToGallery()" class="btn btn-primary">Назад към галерията</button>
+                <button onclick="buy(${index})" class="btn btn-secondary">Купи</button>
+            </div>
+        `;
+        document.body.innerHTML = detailPage.innerHTML;
+    }
+
+    // Function to go back to the gallery
+    function goBackToGallery() {
+        document.body.innerHTML = "";
+        window.location.reload();
+    }
+
+    // Function to handle the hover effect of the "Продадено" label
+    const soldLabelStyle = document.createElement('style');
+    soldLabelStyle.innerHTML = `
+        .sold-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 5px;
+            display: none;
+        }
+
+        figure:hover .sold-label {
+            display: block;
+        }
+    `;
+    document.head.appendChild(soldLabelStyle);
+
+	function buy(index) {
+	
+		// Open the Revolut site in a new tab
+		window.open("https://revolut.me/kristiqjbf", "_blank"); // Open in a new tab
+		// Mark the item as sold
+		galleryData[index].sold = true;
+
+		// Update localStorage
+		localStorage.setItem('galleryData', JSON.stringify(galleryData));
+
+		// Reload the gallery to reflect the changes
+		createGallery(galleryData);
+
+	}
+
+
+    // Initialize gallery data from localStorage or default data
+    let galleryData = JSON.parse(localStorage.getItem('galleryData')) || [
+        {
+            title: "Макет на Панорамата",
+            imgSrc: "../I/panorama.jpg",
+            description: "Макетът на Панорамата представлява детайлно изработен модел на една от най-значимите панорами в България.",
+            sold: false,
+            price: "100 лв"
+        },
+        {
+            title: "Конструктивен макет на Националния Дворец на Културата",
+            imgSrc: "../I/ndk.jpg",
+            description: "Конструктивният макет на Националния Дворец на Културата (НДК) е една от емблематичните архитектурни изработки.",
+            sold: false,
+            price: "200 лв"
+        },
+        {
+            title: "Макет на крепостта Царевец",
+            imgSrc: "../I/carevec.jpg",
+            description: "Макетът на крепостта Царевец пресъздава един от най-важните исторически символи на българската средновековна крепостна архитектура.",
+            sold: false,
+            price: "140 лв"
+        },
+        {
+            title: "Макет на Рилския манастир",
+            imgSrc: "../I/rila.jpg",
+            description: "Макетът на Рилския манастир е едно от най-впечатляващите произведения, отразяващо духовното и архитектурно значение.",
+            sold: false,
+            price: "100 лв"
+        },
+        {
+            title: "Макет на Боянската църква",
+            imgSrc: "../I/boyana.jpg",
+            description: "Макетът на Боянската църква е истински шедьовър на българската архитектура и изкуство.",
+            sold: false,
+            price: "1030 лв"
+        },
+        {
+            title: "Макет на Александър Невски",
+            imgSrc: "../I/alexander.jpg",
+            description: "Макетът на храм-паметник Александър Невски представлява българското духовно наследство.",
+            sold: false,
+            price: "200 лв"
+        }
+    ];
+
+    // Load gallery data
+    createGallery(galleryData);
+
+    // Event listener for clearing local storage
+    document.addEventListener('DOMContentLoaded', function () {
+        const clearButton = document.getElementById('clearJasonData');
+        clearButton.addEventListener('click', function () {
+            // Clear the local storage data (JSON data stored in localStorage)
+            localStorage.clear();
+
+            // Clear the gallery from the DOM
+            document.getElementById("gallery-container").innerHTML = '';
+
+            // Optionally, if you want to reset galleryData to an empty state:
+            galleryData = [];
+            window.location.reload();
+        });
+    });
+</script>
+
+
+
+</body>
+
+</html>
